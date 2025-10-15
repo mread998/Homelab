@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: movies-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-movies  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tv-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-tv  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: music-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-music  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: books-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-books  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: learn-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-learn  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: config-pvc
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-config  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+
