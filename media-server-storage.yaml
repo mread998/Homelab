@@ -10,11 +10,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -32,11 +32,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -54,11 +54,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -76,11 +76,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -98,11 +98,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -120,11 +120,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -142,11 +142,11 @@ metadata:
   namespace: media-server 
 spec:
   capacity:
-    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+    storage: 100Gi        
   accessModes:
     - ReadWriteMany
   persistentVolumeReclaimPolicy: Retain
-  mountOptions:           # optional but useful
+  mountOptions:           
     - nfsvers=4.1
     - rsize=1048576
     - wsize=1048576
@@ -167,7 +167,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-movies  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---
@@ -181,7 +181,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-tv  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---
@@ -195,7 +195,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-music  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---
@@ -209,7 +209,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-books  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---
@@ -223,7 +223,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-learn  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---
@@ -237,7 +237,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-config  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---
@@ -251,7 +251,7 @@ spec:
     - ReadWriteMany
   resources:
     requests:
-      storage: 10Gi         # ≤ PV capacity; purely for matching
+      storage: 10Gi         
   volumeName: nfs-pv-downloads  # <-- direct bind to the PV (static provisioning)
   storageClassName: ""      # important: empty for static PVs
 ---

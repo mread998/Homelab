@@ -41,3 +41,17 @@ metadata:
        - name: nfs-pv-downloads
          persistentVolumeClaim:
             claimName: nfs-pv-downloads # Mount the PVC for incomplete files (adjust if separate storage is desired)
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sabnzbd
+  namespace: media-server    
+spec:
+  selector:
+    app: sabnzbd
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP # Or NodePort/LoadBalancer
