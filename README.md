@@ -246,5 +246,37 @@ Repeat for other contoll nodes
 
 ### Final settings
 
+access k3s on contol nodes
+``` bash
+sudo k3s kubectl get nodes
+```
+
+Allow for non-sudo user run command on all nodes
+```bash
+sudo chmod 644 /etc/rancher/k3s/k3s.yaml
+```
+
+Allow for remote contol
+install kubectl on remote server [kubectl install docs](https://kubernetes.io/docs/tasks/tools/) 
+
+copy the config from one of the contorl nodes
+``` bash
+sudo cat /etc/rancher/k3s/k3s.yaml
+```
+
+past the contents in 
+``` bash 
+~/.kube/config
+```
+
+update server from 127.0.0.1 to ip or host of load balancer
+
+### To Do
+
+Metallb 
+cert manager
+ingress contoller
+media server depolyment
+
 
 
