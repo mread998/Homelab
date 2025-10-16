@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -99,3 +100,4 @@ spec:
       port: 32414
       targetPort: 32414
   type: LoadBalancer
+  ---

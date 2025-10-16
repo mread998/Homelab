@@ -1,0 +1,257 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media-server
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-movies
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Movies   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-downloads
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Downloads   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-tv
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/TV   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-music
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Music   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-books
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Books   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-learn
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Learn   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: nfs-pv-config
+  namespace: media-server 
+spec:
+  capacity:
+    storage: 100Gi        # logical size; NFS ignores it but PVC must match/fit
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  mountOptions:           # optional but useful
+    - nfsvers=4.1
+    - rsize=1048576
+    - wsize=1048576
+    - hard
+    - timeo=600
+    - retrans=2
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/k3s-apps   # <-- the *existing* directory with your files
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: movies-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-movies  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tv-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-tv  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: music-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-music  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: books-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-books  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: learn-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-learn  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: config-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-config  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: downloads-pvc
+  namespace: media-server 
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 10Gi         # ≤ PV capacity; purely for matching
+  volumeName: nfs-pv-downloads  # <-- direct bind to the PV (static provisioning)
+  storageClassName: ""      # important: empty for static PVs
+---
