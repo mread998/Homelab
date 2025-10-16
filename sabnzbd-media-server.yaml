@@ -49,7 +49,7 @@ metadata:
   namespace: media-server    
 spec:
   selector:
-    app: sabnzbd
+    app: { app: sabnzbd }
   ports:
     - protocol: TCP
       port: 8080
