@@ -28,20 +28,20 @@ spec:
         - name: TZ
           value: "America/New_York" # Replace with your timezone
         volumeMounts:
-        - name: nfs-pv-config
-          mountPath: /config/sonarr
-        - name: nfs-pv-tv
-          mountPath: /data/TV 
+          - name: nfs-pv-config
+            mountPath: /config/sonarr
+          - name: nfs-pv-tv
+            mountPath: /data/TV 
         #- name: downloads
         #  mountPath: /data/downloads # Adjust as per your download client setup
       volumes:
-      - name: config
+      - name: nfs-pv-config
         persistentVolumeClaim:
           claimName: sonarr-config-pvc # Name of your PVC for Sonarr config
-      - name: media
+      - name: nfs-pv-tv
         persistentVolumeClaim:
           claimName: media-pvc # Name of your PVC for media library
-      - name: downloads
+      - name: nfs-pv-downloads
         persistentVolumeClaim:
           claimName: downloads-pvc # Name of your PVC for downloads
 ---

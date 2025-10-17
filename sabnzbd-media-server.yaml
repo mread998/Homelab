@@ -2,7 +2,10 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: sabnzbd
-  namespace: media-server  
+  namespace: media-server   
+  labels:
+    app: sonarr
+spec:
   replicas: 1
   selector:
     matchLabels:
@@ -38,9 +41,9 @@ metadata:
        - name: nfs-pv-downloads
          persistentVolumeClaim:
             claimName: nfs-pv-downloads # Mount the PVC for downloads (adjust if separate storage is desired)
-       - name: nfs-pv-downloads
-         persistentVolumeClaim:
-            claimName: nfs-pv-downloads # Mount the PVC for incomplete files (adjust if separate storage is desired)
+#       - name: nfs-pv-downloads
+#         persistentVolumeClaim:
+#            claimName: nfs-pv-downloads # Mount the PVC for incomplete files (adjust if separate storage is desired)
 ---
 apiVersion: v1
 kind: Service
@@ -54,4 +57,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: ClusterIP # Or NodePort/LoadBalancer
+  type: LoadBalancer #ClusterIP # Or NodePort/LoadBalancer
