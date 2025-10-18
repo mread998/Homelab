@@ -49,20 +49,21 @@ spec:
             - name: nfs-pv-tv
               mountPath: /data/TV # Or specific paths like /data/movies, /data/tv
       volumes:
-        - name: nfs-pv-config
-          persistentVolumeClaim:
-            claimName: config-pvc
-        - name: nfs-pv-movies
-          persistentVolumeClaim:
-            claimName: movies-pvc
-        - name: nfs-pv-tv
-          persistentVolumeClaim:
-            claimName: tv-pvc
+       - name: nfs-pv-config
+         persistentVolumeClaim:
+          claimName: config-pvc
+       - name: nfs-pv-movies
+         persistentVolumeClaim:
+          claimName: movies-pvc
+       - name: nfs-pv-tv
+         persistentVolumeClaim:
+          claimName: tv-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: plex-service
+  nameserver: media-server
 spec:
   selector:
     app: plex
