@@ -40,7 +40,7 @@ metadata:
   name: pv-plex-tv
   labels:
     app: plex
-    tier: media
+    tier: tv
 spec:
   capacity:
     storage: 50Gi
@@ -68,7 +68,7 @@ spec:
   selector:
     matchLabels:
       app: plex
-      tier: media
+      tier: tv
 ---
 apiVersion: v1
 kind: PersistentVolume
@@ -76,7 +76,7 @@ metadata:
   name: pv-plex-movie
   labels:
     app: plex
-    tier: media
+    tier: movie
 spec:
   capacity:
     storage: 50Gi
@@ -104,7 +104,7 @@ spec:
   selector:
     matchLabels:
       app: plex
-      tier: media
+      tier: movie
 ---
 apiVersion: apps/v1
 kind: Deployment
