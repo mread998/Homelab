@@ -92,7 +92,7 @@ spec:
   storageClassName: ""
   nfs:
     server: 10.11.11.46
-    path: /mnt/data/Downloads/Completed
+    path: /mnt/data/Downloads/Complete
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -186,7 +186,7 @@ spec:
             - name: tv
               mountPath: /TV
             - name: downloads
-              mountPath: /Downloads/Completed
+              mountPath: /Downloads/Complete
             - name: incomplete
               mountPath: /Downloads/Incomplete
           # If you also want library mounts later, add more volumeMounts here.
