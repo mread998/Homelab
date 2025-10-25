@@ -1,0 +1,221 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-sonarr-config
+  labels:
+    app: sonarr
+    tier: config
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/AppConfig/Sonarr
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sonarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: sonarr
+      tier: config
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-sonarr-tv
+  labels:
+    app: sonarr
+    tier: media
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/TV
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sonarr-tv
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: sonarr
+      tier: media
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-sonarr-downloads
+  labels:
+    app: sonarr
+    tier: media
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Downloads/Completed
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sonarr-downloads
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: sonarr
+      tier: media
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-sonarr-incomplete
+  labels:
+    app: sonarr
+    tier: media
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Downloads/Incomplete
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sonarr-incomplete
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: sonarr
+      tier: media
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sonarr
+  template:
+    metadata:
+      labels:
+        app: sonarr
+    spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: sonarr
+          image: lscr.io/linuxserver/sonarr:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8989
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+          volumeMounts:
+            - name: config
+              mountPath: /config              # Plex expects config here
+            - name: tv
+              mountPath: /TV
+            - name: downloads
+              mountPath: /Downloads/Completed
+            - name: incomplete
+              mountPath: /Downloads/Incomplete
+          # If you also want library mounts later, add more volumeMounts here.
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-sonarr-config
+        - name: tv
+          persistentVolumeClaim:
+            claimName: pvc-sonarr-tv
+        - name: downloads
+          persistentVolumeClaim:
+            claimName: pvc-sonarr-downloads
+        - name: incomplete
+          persistentVolumeClaim:
+            claimName: pvc-sonarr-incomplete
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sonarr
+  namespace: media
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.82    # pick a free IP in your MetalLB range
+  selector:
+    app: sonarr
+  ports:
+    - name: http
+      port: 8989
+      targetPort: 8989
+      protocol: TCP
