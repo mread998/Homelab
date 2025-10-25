@@ -1,11 +1,122 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: media
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-plex-config
+  labels:
+    app: plex
+    tier: config
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/AppConfig/Plex
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-plex-tv
+  labels:
+    app: plex
+    tier: media
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/TV
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-plex-tv
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: plex
+      tier: media
+---
+  name: pvc-plex-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: plex
+      tier: config
+---
+
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-plex-movie
+  labels:
+    app: plex
+    tier: media
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Movies
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-plex-movie
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: plex
+      tier: media
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: plex
-  namespace: media-server   
-  labels:
-    app: plex
+  namespace: media
 spec:
   replicas: 1
   selector:
@@ -16,89 +127,49 @@ spec:
       labels:
         app: plex
     spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: plex
-          image: plexinc/pms-docker:latest # Or linuxserver/plex for ARM64
-          env:
-            - name: PLEX_CLAIM
-              value: "claim-TyBrQ21D9Bm_Sf11ayiU" # Obtain from plex.tv/claim
-            - name: TZ
-              value: "America/Chicago" # Set your timezone
+          image: lscr.io/linuxserver/plex:latest
           ports:
             - containerPort: 32400
-              protocol: TCP
-            - containerPort: 3005
-              protocol: TCP
-            - containerPort: 8324
-              protocol: TCP
-            - containerPort: 32469
-              protocol: TCP
-            - containerPort: 32410
-              protocol: UDP
-            - containerPort: 32412
-              protocol: UDP
-            - containerPort: 32413
-              protocol: UDP
-            - containerPort: 32414
-              protocol: UDP
-          volumeMounts:
-            - name: nfs-pv-config
-              mountPath: /config/plex
-            - name: nfs-pv-movies
-              mountPath: /data/Movies # Or specific paths like /data/movies, /data/tv
-            - name: nfs-pv-tv
-              mountPath: /data/TV # Or specific paths like /data/movies, /data/tv
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+            # Optional: first-time claim
+            - name: PLEX_CLAIM
+              value: "claim-JrwqE9u-v_uktKnjH42o"   # get from https://www.plex.tv/claim
       volumes:
-       - name: nfs-pv-config
-         persistentVolumeClaim:
-          claimName: config-pvc
-       - name: nfs-pv-movies
-         persistentVolumeClaim:
-          claimName: movies-pvc
-       - name: nfs-pv-tv
-         persistentVolumeClaim:
-          claimName: tv-pvc
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-plex-config
+        - name: tv
+          persistentVolumeClaim:
+            claimName: pvc-plex-tv
+        - name: movie
+          persistentVolumeClaim:
+            claimName: pvc-plex-movie
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: plex-service
-  nameserver: media-server
+  name: plex
+  namespace: media
 spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.81    # pick a free IP in your MetalLB range
   selector:
     app: plex
   ports:
     - name: http
-      protocol: TCP
       port: 32400
       targetPort: 32400
-    - name: gdm-3005
       protocol: TCP
-      port: 3005
-      targetPort: 3005
-    - name: dlna-8324
-      protocol: TCP
-      port: 8324
-      targetPort: 8324
-    - name: dlna-32469
-      protocol: TCP
-      port: 32469
-      targetPort: 32469
-    - name: gdm-udp-1
-      protocol: UDP
-      port: 32410
-      targetPort: 32410
-    - name: gdm-udp-2
-      protocol: UDP
-      port: 32412
-      targetPort: 32412
-    - name: gdm-udp-3
-      protocol: UDP
-      port: 32413
-      targetPort: 32413
-    - name: gdm-udp-4
-      protocol: UDP
-      port: 32414
-      targetPort: 32414
-  type: LoadBalancer
-  ---
