@@ -1,9 +1,9 @@
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-sonarr-config
+  name: pv-sabnzbd-config
   labels:
-    app: sonarr
+    app: sabnzbd
     tier: config
 spec:
   capacity:
@@ -15,12 +15,12 @@ spec:
   storageClassName: ""
   nfs:
     server: 10.11.11.46
-    path: /mnt/data/AppConfig/Sonarr
+    path: /mnt/data/AppConfig/Sabnzbd
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-sonarr-config
+  name: pvc-sabnzbd-config
   namespace: media
 spec:
   accessModes:
@@ -31,51 +31,15 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: sonarr
+      app: sabnzbd
       tier: config
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-sonarr-tv
+  name: pv-sabnzbd-downloads
   labels:
-    app: sonarr
-    tier: media
-spec:
-  capacity:
-    storage: 50Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-  storageClassName: ""
-  nfs:
-    server: 10.11.11.46
-    path: /mnt/data/TV
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-sonarr-tv
-  namespace: media
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 50Gi
-  storageClassName: ""
-  selector:
-    matchLabels:
-      app: sonarr
-      tier: media
----
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-sonarr-downloads
-  labels:
-    app: sonarr
+    app: sabnzbd
     tier: media
 spec:
   capacity:
@@ -92,7 +56,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-sonarr-downloads
+  name: pvc-sabnzbd-downloads
   namespace: media
 spec:
   accessModes:
@@ -103,15 +67,15 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: sonarr
+      app: sabnzbd
       tier: media
 ---
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-sonarr-incomplete
+  name: pv-sabnzbd-incomplete
   labels:
-    app: sonarr
+    app: sabnzbd
     tier: media
 spec:
   capacity:
@@ -128,7 +92,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-sonarr-incomplete
+  name: pvc-sabnzbd-incomplete
   namespace: media
 spec:
   accessModes:
@@ -139,23 +103,23 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: sonarr
+      app: sabnzbd
       tier: media
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: sonarr
+  name: sabnzbd
   namespace: media
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: sonarr
+      app: sabnzbd
   template:
     metadata:
       labels:
-        app: sonarr
+        app: sabnzbd
     spec:
       # Helps NFS permissions
       securityContext:
@@ -163,10 +127,10 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: sonarr
-          image: lscr.io/linuxserver/sonarr:latest
+          image: lscr.io/linuxserver/sabnzbd:latest
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8989
+            - containerPort: 8080
               name: http
           env:
             - name: PUID
@@ -178,39 +142,46 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /config              # Plex expects config here
-            - name: tv
-              mountPath: /TV
             - name: downloads
               mountPath: /Downloads/Complete
             - name: incomplete
               mountPath: /Downloads/Incomplete
           # If you also want library mounts later, add more volumeMounts here.
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 60
+            periodSeconds: 20      
       volumes:
         - name: config
           persistentVolumeClaim:
-            claimName: pvc-sonarr-config
-        - name: tv
-          persistentVolumeClaim:
-            claimName: pvc-sonarr-tv
+            claimName: pvc-sabnzbd-config
         - name: downloads
           persistentVolumeClaim:
-            claimName: pvc-sonarr-downloads
+            claimName: pvc-sabnzbd-downloads
         - name: incomplete
           persistentVolumeClaim:
-            claimName: pvc-sonarr-incomplete
+            claimName: pvc-sabnzbd-incomplete
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: sonarr
+  name: sabnzbd
   namespace: media
 spec:
   type: LoadBalancer
-  loadBalancerIP: 10.11.11.82    # pick a free IP in your MetalLB range
+  loadBalancerIP: 10.11.11.83    # pick a free IP in your MetalLB range
   selector:
-    app: sonarr
+    app: sabnzbd
   ports:
     - name: http
-      port: 8989
-      targetPort: 8989
+      port: 8080
+      targetPort: 8080
       protocol: TCP
