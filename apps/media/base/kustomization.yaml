@@ -4,18 +4,21 @@ namespace: media
 
 resources:
   - media-namespace.yaml
+
+  - pv/config-pv.yaml
   - pv/movies-pv.yaml
   - pv/tv-pv.yaml
   - pv/music-pv.yaml
   - pv/download-pv.yaml
 
+  - pvc/config-pvc.yaml
   - pvc/movies-pvc.yaml
   - pvc/tv-pvc.yaml
   - pvc/music-pvc.yaml
   - pvc/download-pvc.yaml
 
   - apps/plex-media-server.yaml
-  
+
 commonLabels:
   stack: media
 
