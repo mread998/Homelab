@@ -4,9 +4,6 @@ namespace: media
 
 resources:
   - media-namespace.yaml
-
-resources:
-  - namespace.yaml
   - pv/movies-pv.yaml
   - pv/tv-pv.yaml
   - pv/music-pv.yaml
