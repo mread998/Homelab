@@ -50,7 +50,7 @@ spec:
             claimName: pvc-tv
         - name: movie
           persistentVolumeClaim:
-            claimName: pvc-movie
+            claimName: pvc-movies
 ---
 apiVersion: v1
 kind: Service
