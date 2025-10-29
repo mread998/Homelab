@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-lidarr-music
+  name: pvc-music
   namespace: media
 spec:
   accessModes:

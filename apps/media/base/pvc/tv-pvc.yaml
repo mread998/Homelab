@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-sonarr-tv
+  name: pvc-tv
   namespace: media
 spec:
   accessModes:
