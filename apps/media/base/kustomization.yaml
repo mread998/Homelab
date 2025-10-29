@@ -6,7 +6,7 @@ resources:
   - media-namespace.yaml
 
   - pv/config-pv.yaml
-  - pv/config-pv.yaml
+  - pvc/download-pvc.yaml
   - pv/movies-pv.yaml
   - pv/music-pv.yaml
   - pv/tv-pv.yaml
