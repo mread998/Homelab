@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: plex-ingress
+  namespace: media
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure
+    traefik.ingress.kubernetes.io/router.tls: "true"
+    # cert-manager.io/cluster-issuer: homelan-ca   # set if using cert-manager
+spec:
+  ingressClassName: traefik
+  tls:
+    - secretName: plex-tls                 # cert-manager will fill this
+      hosts:
+        - plex.thundertest.org                         # e.g., app.home.lan
+  rules:
+    - host: plex.thundertest.org
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: plex
+                port:
+                  number: 32400

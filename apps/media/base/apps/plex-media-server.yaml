@@ -52,18 +52,31 @@ spec:
           persistentVolumeClaim:
             claimName: pvc-movies
 ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: plex
+#   namespace: media
+# spec:
+#   type: LoadBalancer
+#   loadBalancerIP: 10.11.11.81    # pick a free IP in your MetalLB range
+#   selector:
+#     app: plex
+#   ports:
+#     - name: http
+#       port: 32400
+#       targetPort: 32400
+#       protocol: TCP
 apiVersion: v1
 kind: Service
 metadata:
   name: plex
   namespace: media
 spec:
-  type: LoadBalancer
-  loadBalancerIP: 10.11.11.81    # pick a free IP in your MetalLB range
+  type: ClusterIP
   selector:
     app: plex
   ports:
     - name: http
-      port: 32400
-      targetPort: 32400
-      protocol: TCP
+      port: 32400         # e.g., 8080 exposed inside cluster
+      targetPort: 32400 # usually same as containerPort
