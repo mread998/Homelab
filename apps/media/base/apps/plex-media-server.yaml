@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: plex
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: plex
+  template:
+    metadata:
+      labels:
+        app: plex
+    spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: plex
+          image: lscr.io/linuxserver/plex:latest
+          ports:
+            - containerPort: 32400
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+            # Optional: first-time claim
+            - name: PLEX_CLAIM
+              value: "claim-JrwqE9u-v_uktKnjH42o"   # get from https://www.plex.tv/claim
+          volumeMounts:
+            - name: config
+              mountPath: /config              # Plex expects config here
+            - name: tv
+              mountPath: /TV
+            - name: movie
+              mountPath: /Movies
+          # If you also want library mounts later, add more volumeMounts here.
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-plex-config
+        - name: tv
+          persistentVolumeClaim:
+            claimName: pvc-tv
+        - name: movie
+          persistentVolumeClaim:
+            claimName: pvc-movie
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: plex
+  namespace: media
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.81    # pick a free IP in your MetalLB range
+  selector:
+    app: plex
+  ports:
+    - name: http
+      port: 32400
+      targetPort: 32400
+      protocol: TCP
