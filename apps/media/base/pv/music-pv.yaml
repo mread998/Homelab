@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-lidarr-music
+  labels:
+    tier: music
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Music
+---

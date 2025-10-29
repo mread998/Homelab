@@ -1,0 +1,136 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-plex-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: plex
+      tier: plex-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sonarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: sonarr
+      tier: sonarr-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-radarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: radarr
+      tier: radarr-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-sabnzbd-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: sabnzbd
+      tier: sabnzbd-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-lidarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: lidarr
+      tier: lidarr-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-tautulli-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: tautulli
+      tier: tautulli-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-navidrome-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: navidrome
+      tier: navidrome-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-bazarr-config
+  namespace: media
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: bazarr
+      tier: bazarr-config
+---
