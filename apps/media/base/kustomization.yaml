@@ -18,6 +18,7 @@ resources:
   - pvc/tv-pvc.yaml
 
   - apps/plex-media-server.yaml
+  - apps/sabnzbd-media-server.yaml
 
 commonLabels:
   stack: media
