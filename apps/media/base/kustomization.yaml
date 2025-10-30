@@ -19,6 +19,10 @@ resources:
 
   - apps/plex-media-server.yaml
   - apps/sabnzbd-media-server.yaml
+  # - apps/sonarr-media-server.yaml
+  # - apps/radarr-media-server.yaml
+  # - apps/libdarr-media-server.yaml
+  # - apps/-media-server.yaml
 
 commonLabels:
   stack: media
