@@ -37,8 +37,8 @@ spec:
               mountPath: /config              # Plex expects config here
             - name: downloads
               mountPath: /Downloads/Complete
-            # - name: incomplete
-            #   mountPath: /Downloads/Incomplete
+            - name: incomplete
+              mountPath: /Downloads/Incomplete
           # If you also want library mounts later, add more volumeMounts here.
           readinessProbe:
             httpGet:
