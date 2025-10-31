@@ -16,21 +16,21 @@ spec:
     server: 10.11.11.46
     path: /mnt/data/Downloads/Complete
 ---
-apiVersion: v1
-kind: PersistentVolume
-metadata:
-  name: pv-incomplete
-  labels:
-  tier: download-incomplete
-spec:
-  capacity:
-    storage: 50Gi
-  accessModes:
-    - ReadWriteMany
-  persistentVolumeReclaimPolicy: Retain
-  volumeMode: Filesystem
-  storageClassName: ""
-  nfs:
-    server: 10.11.11.46
-    path: /mnt/data/Downloads/Incomplete
----
+# apiVersion: v1
+# kind: PersistentVolume
+# metadata:
+#   name: pv-incomplete
+#   labels:
+#   tier: download-incomplete
+# spec:
+#   capacity:
+#     storage: 50Gi
+#   accessModes:
+#     - ReadWriteMany
+#   persistentVolumeReclaimPolicy: Retain
+#   volumeMode: Filesystem
+#   storageClassName: ""
+#   nfs:
+#     server: 10.11.11.46
+#     path: /mnt/data/Downloads/Incomplete
+# ---

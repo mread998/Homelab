@@ -14,19 +14,19 @@ spec:
     matchLabels:
       tier: download-complete
 ---
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: pvc-download-incomplete
-  namespace: media
-spec:
-  accessModes:
-    - ReadWriteMany
-  resources:
-    requests:
-      storage: 50Gi
-  storageClassName: ""
-  selector:
-    matchLabels:
-      tier: download-incomplete
----
+# apiVersion: v1
+# kind: PersistentVolumeClaim
+# metadata:
+#   name: pvc-download-incomplete
+#   namespace: media
+# spec:
+#   accessModes:
+#     - ReadWriteMany
+#   resources:
+#     requests:
+#       storage: 50Gi
+#   storageClassName: ""
+#   selector:
+#     matchLabels:
+#       tier: download-incomplete
+# ---
