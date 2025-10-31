@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: navidrome
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: navidrome
+  template:
+    metadata:
+      labels:
+        app: navidrome
+    spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: navidrome
+          image: deluan/navidrome:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 4533
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+            - name: ND_SCANSCHEDULE
+              value: 1h
+            - name: ND_LOGLEVEL
+              value: info
+            - name: ND_BASEURL
+              value: ""
+          volumeMounts:
+            - name: config
+              mountPath: /config              # Plex expects config here
+            - name: music
+              mountPath: /Music
+
+          # If you also want library mounts later, add more volumeMounts here.
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-navidrome-config
+        - name: music
+          persistentVolumeClaim:
+            claimName: pvc-music
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: navidrome
+  namespace: media
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.87    # pick a free IP in your MetalLB range
+  selector:
+    app: navidrome
+  ports:
+    - name: http
+      port: 4533
+      targetPort: 4533
+      protocol: TCP

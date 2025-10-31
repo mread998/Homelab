@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tautulli
+  namespace: media
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tautulli
+  template:
+    metadata:
+      labels:
+        app: tautulli
+    spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: tautulli
+          image: ghcr.io/tautulli/tautulli:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8181
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+          volumeMounts:
+            - name: config
+              mountPath: /config              # Plex expects config here
+          # If you also want library mounts later, add more volumeMounts here.
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-tautulli-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tautulli
+  namespace: media
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.88    # pick a free IP in your MetalLB range
+  selector:
+    app: tautulli
+  ports:
+    - name: http
+      port: 8181
+      targetPort: 8181
+      protocol: TCP
