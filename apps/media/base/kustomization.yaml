@@ -23,7 +23,7 @@ resources:
   - apps/radarr-media-server.yaml
   - apps/lidarr-media-server.yaml
   - apps/tautulli-media-server.yaml
-  # - apps/bazarr-media-server.yaml
+  - apps/bazarr-media-server.yaml
 
 commonLabels:
   stack: media
