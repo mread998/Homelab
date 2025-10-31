@@ -1,73 +1,73 @@
 
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: sonarr
-  namespace: media
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: sonarr
-  template:
-    metadata:
-      labels:
-        app: sonarr
-    spec:
-      # Helps NFS permissions
-      securityContext:
-        fsGroup: 1000
-        fsGroupChangePolicy: "OnRootMismatch"
-      containers:
-        - name: sonarr
-          image: lscr.io/linuxserver/sonarr:latest
-          imagePullPolicy: IfNotPresent
-          ports:
-            - containerPort: 8989
-              name: http
-          env:
-            - name: PUID
-              value: "1000"
-            - name: PGID
-              value: "1000"
-            - name: TZ
-              value: "America/Chicago"
-          volumeMounts:
-            - name: config
-              mountPath: /config              # Plex expects config here
-            - name: tv
-              mountPath: /TV
-            - name: downloads
-              mountPath: /Downloads/Complete
-            - name: incomplete
-              mountPath: /Downloads/Incomplete
-          # If you also want library mounts later, add more volumeMounts here.
-      volumes:
-        - name: config
-          persistentVolumeClaim:
-            claimName: pvc-sonarr-config
-        - name: tv
-          persistentVolumeClaim:
-            claimName: pvc-tv
-        - name: downloads
-          persistentVolumeClaim:
-            claimName: pvc-downloads
-        - name: incomplete
-          persistentVolumeClaim:
-            claimName: pvc-download-incomplete
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: sonarr
-  namespace: media
-spec:
-  type: LoadBalancer
-  loadBalancerIP: 10.11.11.83    # pick a free IP in your MetalLB range
-  selector:
-    app: sonarr
-  ports:
-    - name: http
-      port: 8989
-      targetPort: 8989
-      protocol: TCP
+# apiVersion: apps/v1
+# kind: Deployment
+# metadata:
+#   name: sonarr
+#   namespace: media
+# spec:
+#   replicas: 1
+#   selector:
+#     matchLabels:
+#       app: sonarr
+#   template:
+#     metadata:
+#       labels:
+#         app: sonarr
+#     spec:
+#       # Helps NFS permissions
+#       securityContext:
+#         fsGroup: 1000
+#         fsGroupChangePolicy: "OnRootMismatch"
+#       containers:
+#         - name: sonarr
+#           image: lscr.io/linuxserver/sonarr:latest
+#           imagePullPolicy: IfNotPresent
+#           ports:
+#             - containerPort: 8989
+#               name: http
+#           env:
+#             - name: PUID
+#               value: "1000"
+#             - name: PGID
+#               value: "1000"
+#             - name: TZ
+#               value: "America/Chicago"
+#           volumeMounts:
+#             - name: config
+#               mountPath: /config              # Plex expects config here
+#             - name: tv
+#               mountPath: /TV
+#             - name: downloads
+#               mountPath: /Downloads/Complete
+#             - name: incomplete
+#               mountPath: /Downloads/Incomplete
+#           # If you also want library mounts later, add more volumeMounts here.
+#       volumes:
+#         - name: config
+#           persistentVolumeClaim:
+#             claimName: pvc-sonarr-config
+#         - name: tv
+#           persistentVolumeClaim:
+#             claimName: pvc-tv
+#         - name: downloads
+#           persistentVolumeClaim:
+#             claimName: pvc-downloads
+#         - name: incomplete
+#           persistentVolumeClaim:
+#             claimName: pvc-download-incomplete
+# ---
+# apiVersion: v1
+# kind: Service
+# metadata:
+#   name: sonarr
+#   namespace: media
+# spec:
+#   type: LoadBalancer
+#   loadBalancerIP: 10.11.11.83    # pick a free IP in your MetalLB range
+#   selector:
+#     app: sonarr
+#   ports:
+#     - name: http
+#       port: 8989
+#       targetPort: 8989
+#       protocol: TCP
