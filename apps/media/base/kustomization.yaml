@@ -22,7 +22,7 @@ resources:
   - apps/sonarr-media-server.yaml
   - apps/radarr-media-server.yaml
   - apps/libdarr-media-server.yaml
-   - apps/tautulli-media-server.yaml
+  - apps/tautulli-media-server.yaml
   - apps/lidarr-media-server.yaml
   - apps/bazarr-media-server.yaml
 
