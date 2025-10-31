@@ -24,6 +24,7 @@ resources:
   - apps/lidarr-media-server.yaml
   - apps/tautulli-media-server.yaml
   - apps/bazarr-media-server.yaml
+  - apps/navidrome-media-server.yaml
 
 commonLabels:
   stack: media
