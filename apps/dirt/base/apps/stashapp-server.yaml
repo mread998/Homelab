@@ -78,7 +78,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: stashapp
-  namespace: media
+  namespace: dirt
 spec:
   type: LoadBalancer
   loadBalancerIP: 10.11.11.89    # pick a free IP in your MetalLB range
