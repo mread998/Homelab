@@ -1,0 +1,113 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stashapp-config
+  labels:
+    app: stashapp
+    tier: config
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/AppConfig/StashApp
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stashapp-data
+  labels:
+    app: stashapp
+    tier: data
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Dirt/Content
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stashapp-metadata
+  labels:
+    app: stashapp
+    tier: metadata
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Dirt/Stash/metadata
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stashapp-cache
+  labels:
+    app: stashapp
+    tier: cache
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Dirt/Stash/cache
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stashapp-blob
+  labels:
+    app: stashapp
+    tier: blobs
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Dirt/Stash/blobs
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-stashapp-generated
+  labels:
+    app: stashapp
+    tier: generated
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/Dirt/Stash/generated

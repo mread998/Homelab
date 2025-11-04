@@ -1,0 +1,91 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: stashapp
+  namespace: dirt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: stashapp
+  template:
+    metadata:
+      labels:
+        app: stashapp
+    spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: stashapp
+          image: stashapp/stash:latest
+          ports:
+            - containerPort: 9999
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+            - name: STASH_STASH
+              value: /data/
+            - name: STASH_GENERATED
+              value: /generated/
+            - name: STASH_METADATA
+              value: /metadata/
+            - name: STASH_CACHE
+              value: /cache/
+            - name: STASH_PORT
+              value: "9999" 
+          volumeMounts:
+            - name: config
+              mountPath: /config
+            - name: data
+              mountPath: /data
+            - name: metadata
+              mountPath: /metadata
+            - name: blobs
+              mountPath: /blobs
+            - name: cache
+              mountPath: /cache
+            - name: generated
+              mountPath: /generated                          
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-stashapp-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: pvc-stashapp-data
+        - name: metadata
+          persistentVolumeClaim:
+            claimName: pvc-stashapp-data
+        - name: blobs
+          persistentVolumeClaim:
+            claimName: pvc-stashapp-blobs
+        - name: cache
+          persistentVolumeClaim:
+            claimName: pvc-stashapp-cache
+        - name: generated
+          persistentVolumeClaim:
+            claimName: pvc-stashapp-generated
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: stashapp
+  namespace: media
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.89    # pick a free IP in your MetalLB range
+  selector:
+    app: stashapp
+  ports:
+    - name: http
+      port: 9999
+      targetPort: 9999
+      protocol: TCP

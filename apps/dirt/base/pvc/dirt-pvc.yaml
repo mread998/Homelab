@@ -1,0 +1,102 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-stashapp-config
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: stashapp
+      tier: config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-stashapp-data
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: stashapp
+      tier: data
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-stashapp-metadata
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: stashapp
+      tier: metadata
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-stashapp-cache
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: stashapp
+      tier: cache
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-stashapp-blobs
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: stashapp
+      tier: blobs
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-stashapp-generated
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+      app: stashapp
+      tier: generated
+---
