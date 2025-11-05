@@ -19,7 +19,7 @@ spec:
         fsGroupChangePolicy: "OnRootMismatch"
       containers:
         - name: whisparr
-          image: lscr.io/linuxserver/whisparr:latest
+          image: ghcr.io/hotio/whisparr:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 6969
