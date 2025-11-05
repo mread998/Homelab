@@ -43,7 +43,7 @@ spec:
               value: "9999" 
           volumeMounts:
             - name: config
-              mountPath: /config
+              mountPath: /root/.stash
             - name: data
               mountPath: /data
             - name: metadata
