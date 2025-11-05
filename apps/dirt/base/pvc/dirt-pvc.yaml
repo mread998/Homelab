@@ -12,8 +12,7 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: stashapp
-      tier: config
+     tier: stashapp-config
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -29,8 +28,7 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: stashapp
-      tier: data
+      tier: stashapp-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -46,8 +44,7 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: stashapp
-      tier: metadata
+      tier: stashapp-metadata
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -63,8 +60,7 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: stashapp
-      tier: cache
+      tier: stashapp-cache
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -80,8 +76,7 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: stashapp
-      tier: blobs
+         tier: stashapp-blobs
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -97,6 +92,5 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      app: stashapp
-      tier: generated
+      tier: stashapp-generated
 ---

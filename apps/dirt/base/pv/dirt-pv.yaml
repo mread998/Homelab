@@ -3,8 +3,7 @@ kind: PersistentVolume
 metadata:
   name: pv-stashapp-config
   labels:
-    app: stashapp
-    tier: config
+    tier: stashapp-config
 spec:
   capacity:
     storage: 50Gi
@@ -22,8 +21,7 @@ kind: PersistentVolume
 metadata:
   name: pv-stashapp-data
   labels:
-    app: stashapp
-    tier: data
+    tier: stashapp-data
 spec:
   capacity:
     storage: 50Gi
@@ -41,8 +39,7 @@ kind: PersistentVolume
 metadata:
   name: pv-stashapp-metadata
   labels:
-    app: stashapp
-    tier: metadata
+    tier: stashapp-metadata
 spec:
   capacity:
     storage: 50Gi
@@ -60,8 +57,7 @@ kind: PersistentVolume
 metadata:
   name: pv-stashapp-cache
   labels:
-    app: stashapp
-    tier: cache
+    tier: stashapp-cache
 spec:
   capacity:
     storage: 50Gi
@@ -79,8 +75,7 @@ kind: PersistentVolume
 metadata:
   name: pv-stashapp-blob
   labels:
-    app: stashapp
-    tier: blobs
+    tier: stashapp-blobs
 spec:
   capacity:
     storage: 50Gi
@@ -98,8 +93,7 @@ kind: PersistentVolume
 metadata:
   name: pv-stashapp-generated
   labels:
-    app: stashapp
-    tier: generated
+    tier: stashapp-generated
 spec:
   capacity:
     storage: 50Gi
