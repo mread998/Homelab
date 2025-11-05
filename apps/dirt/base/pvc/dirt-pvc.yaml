@@ -17,6 +17,22 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
+  name: pvc-whisparr-config
+  namespace: dirt
+spec:
+  accessModes:
+    - ReadWriteMany
+  resources:
+    requests:
+      storage: 50Gi
+  storageClassName: ""
+  selector:
+    matchLabels:
+     tier: whisparr-config
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
   name: pvc-dirt-data
   namespace: dirt
 spec:
