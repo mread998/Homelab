@@ -9,8 +9,8 @@ resources:
 
   - pvc/dirt-pvc.yaml
 
-  - apps/stashapp-server.yaml
-
+  - apps/stashapp-dirt-server.yaml
+  - apps/whisparr-dirt-server.yaml
   
 commonLabels:
   stack: dirt
