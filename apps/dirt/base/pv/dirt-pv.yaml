@@ -19,9 +19,27 @@ spec:
 apiVersion: v1
 kind: PersistentVolume
 metadata:
-  name: pv-stashapp-data
+  name: pv-whisparr-config
   labels:
-    tier: stashapp-data
+    tier: whisparr-config
+spec:
+  capacity:
+    storage: 50Gi
+  accessModes:
+    - ReadWriteMany
+  persistentVolumeReclaimPolicy: Retain
+  volumeMode: Filesystem
+  storageClassName: ""
+  nfs:
+    server: 10.11.11.46
+    path: /mnt/data/AppConfig/Whisparr
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: pv-dirt-data
+  labels:
+    tier: dirt-data
 spec:
   capacity:
     storage: 50Gi

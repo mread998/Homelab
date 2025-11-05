@@ -60,7 +60,7 @@ spec:
             claimName: pvc-stashapp-config
         - name: data
           persistentVolumeClaim:
-            claimName: pvc-stashapp-data
+            claimName: pvc-dirt-data
         - name: metadata
           persistentVolumeClaim:
             claimName: pvc-stashapp-metadata

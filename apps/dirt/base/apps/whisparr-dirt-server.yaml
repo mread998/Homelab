@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: whisparr
+  namespace: dirt
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: whisparr
+  template:
+    metadata:
+      labels:
+        app: whisparr
+    spec:
+      # Helps NFS permissions
+      securityContext:
+        fsGroup: 1000
+        fsGroupChangePolicy: "OnRootMismatch"
+      containers:
+        - name: whisparr
+          image: lscr.io/linuxserver/whisparr:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 6969
+              name: http
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Chicago"
+          volumeMounts:
+            - name: config
+              mountPath: /config              
+            - name: data
+              mountPath: /Data
+      volumes:
+        - name: config
+          persistentVolumeClaim:
+            claimName: pvc-whisparr-config
+        - name: data
+          persistentVolumeClaim:
+            claimName: pvc-dirt-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: whisparr
+  namespace: dirt
+spec:
+  type: LoadBalancer
+  loadBalancerIP: 10.11.11.90    # pick a free IP in your MetalLB range
+  selector:
+    app: whisparr
+  ports:
+    - name: http
+      port: 6969
+      targetPort: 6969
+      protocol: TCP

@@ -17,7 +17,7 @@ spec:
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: pvc-stashapp-data
+  name: pvc-dirt-data
   namespace: dirt
 spec:
   accessModes:
@@ -28,7 +28,7 @@ spec:
   storageClassName: ""
   selector:
     matchLabels:
-      tier: stashapp-data
+      tier: dirt-data
 ---
 apiVersion: v1
 kind: PersistentVolumeClaim
